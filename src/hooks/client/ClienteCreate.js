@@ -61,12 +61,13 @@ function ClientCreate() {
 
         try {
             const response = await ClientService.postClient(formData);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 alert('Cadastro realizado com sucesso!');
                 handleClear();
                 setErrors({});
             } else {
-                const dataErros = response.response.data.data;
+                console.log(response);
+                const dataErros = response.data;
                 setErrors(dataErros || {});
                 alert(response.response.message || 'Erro ao enviar os dados.');
             }

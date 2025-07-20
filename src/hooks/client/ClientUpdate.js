@@ -16,8 +16,8 @@ const ClientUpdate = () => {
   const fetchClient = async (id) => {
     try {
       const response = await ClientService.getClient(id);
-      if (response.status === 200) {
-        const data = response.data[0];
+      if (response.statusCode === 200) {
+        const data = response.data;
         setFormData({
             client_id: data.id,
             cpf: data.cpf,
@@ -25,15 +25,14 @@ const ClientUpdate = () => {
             date_birth: data.dateBirth || '',
             sex: data.sex || '',
             address: data.address || '',
-            state: data.city.state || '',
-            city_name: data.city.cityName || '',
-            city_id: data.city.id,
+            state: data.state || '',
+            city_name: data.city || '',
         });
       } else {
         console.error('Erro ao buscar os dados do cliente');
       }
     } catch (error) {
-      console.error('Erro ao buscar os dados do cliente:', error);
+      console.log('Erro ao buscar os dados do cliente:', error);
     }
   };
 
