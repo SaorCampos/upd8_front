@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import CityService from '../../services/CityService';
-import ClientService from '../../services/ClientService';
+import { useState } from "react";
+import CityService from "../../services/CityService";
+import ClientService from "../../services/ClientService";
 
 const ClientUpdate = () => {
   const [errors, setErrors] = useState({});
@@ -8,9 +8,9 @@ const ClientUpdate = () => {
   const [formData, setFormData] = useState({
     client_id: 0,
     city_id: 0,
-    address: '',
-    state: '',
-    city_name: '',
+    address: "",
+    state: "",
+    city_name: "",
   });
 
   const fetchClient = async (id) => {
@@ -19,37 +19,36 @@ const ClientUpdate = () => {
       if (response.statusCode === 200) {
         const data = response.data;
         setFormData({
-            client_id: data.id,
-            cpf: data.cpf,
-            name: data.name || '',
-            date_birth: data.dateBirth || '',
-            sex: data.sex || '',
-            address: data.address || '',
-            state: data.state || '',
-            city_name: data.city || '',
+          client_id: data.id,
+          cpf: data.cpf,
+          name: data.name || "",
+          date_birth: data.dateBirth || "",
+          sex: data.sex || "",
+          address: data.address || "",
+          state: data.state || "",
+          city_name: data.city || "",
         });
       } else {
-        console.error('Erro ao buscar os dados do cliente');
+        console.error("Erro ao buscar os dados do cliente");
       }
     } catch (error) {
-      console.log('Erro ao buscar os dados do cliente:', error);
+      console.log("Erro ao buscar os dados do cliente:", error);
     }
   };
 
   const fetchCities = async (state) => {
     if (!state) return;
-
     try {
-        const response = await CityService.getCitiesIntegration(state);
-        if (response.ok) {
-            const data = await response.json();
-            const citiesList = data.map(district => district.nome);
-            setCities(citiesList);
-        } else {
-            console.error('Falha ao obter dados:', response.status);
-        }
+      const response = await CityService.getCitiesIntegration(state);
+      if (response.ok) {
+        const data = await response.json();
+        const citiesList = data.map((district) => district.nome);
+        setCities(citiesList);
+      } else {
+        console.error("Falha ao obter dados:", response.status);
+      }
     } catch (error) {
-        console.error('Erro ao buscar cidades:', error);
+      console.error("Erro ao buscar cidades:", error);
     }
   };
 
@@ -75,25 +74,25 @@ const ClientUpdate = () => {
       const response = await ClientService.putClient(body);
       console.log(response);
       if (response.status === 200) {
-          alert('Edição realizada com sucesso!');
-          handleClear();
-          setErrors({});
+        alert("Edição realizada com sucesso!");
+        handleClear();
+        setErrors({});
       } else {
-          const dataErros = response.response.data.data;
-          setErrors(dataErros || {});
-          alert(response.response.message || 'Erro ao enviar os dados.');
+        const dataErros = response.response.data.data;
+        setErrors(dataErros || {});
+        alert(response.response.message || "Erro ao enviar os dados.");
       }
     } catch (error) {
-        console.error("Erro ao enviar os dados", error);
-        alert('Ocorreu um erro ao enviar o formulário!');
+      console.error("Erro ao enviar os dados", error);
+      alert("Ocorreu um erro ao enviar o formulário!");
     }
   };
 
   const handleClear = () => {
     setFormData({
-      state: '',
-      city_name: '',
-      address: '',
+      state: "",
+      city_name: "",
+      address: "",
     });
     setErrors({});
   };

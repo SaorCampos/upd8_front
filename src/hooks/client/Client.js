@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import ClientService from "../../services/ClientService";
+import CityService from "../../services/CityService";
 
-function Client() {
+function useClient() {
+  // lista de dados
   const [clients, setClients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({
+
+  // filtros controlados pelo formulário
+  const [searchParams, setSearchParams] = useState({
     cpf: "",
     name: "",
     date_birth: "",
@@ -14,6 +18,8 @@ function Client() {
     state: "",
     city: "",
   });
+
+  const [cities, setCities] = useState([]);
 
   const fetchClients = async (page = 1, filters = {}) => {
     setLoading(true);
@@ -25,52 +31,77 @@ function Client() {
       setClients(list);
       setCurrentPage(pagination.page);
       setTotalPages(Math.ceil(pagination.total / pagination.perPage));
-    } catch (error) {
-      console.error("Erro ao buscar dados", error);
+    } catch (err) {
+      console.error("Erro ao buscar clients:", err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchClients(currentPage, filters);
-  }, [currentPage, filters]);
+    fetchClients(currentPage, searchParams);
+  }, [currentPage, searchParams]);
 
-  const handleSearch = (searchParams) => {
-    setFilters(searchParams);
+  useEffect(() => {
+    const uf = searchParams.state;
+    if (!uf) return setCities([]);
+    CityService.getCitiesIntegration(uf)
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+      .then((data) => setCities(data.map((d) => d.nome)))
+      .catch((err) => console.error("Erro ao buscar cidades:", err));
+  }, [searchParams.state]);
+
+  // chamado pelo FilterForm quando clica “Pesquisar”
+  const handleSubmit = (e) => {
+    e.preventDefault();
     setCurrentPage(1);
   };
 
-  const handleDelete = async (name, id) => {
-    const confirmDelete = window.confirm(
-      `Tem certeza que deseja excluir o cliente: ${name}?`
-    );
-    if (confirmDelete) {
-      try {
-        const response = await ClientService.deleteClient(id);
-        if (response.status === 200) {
-          setClients(clients.filter((client) => client.id !== id));
-          alert(`Cliente: ${name} excluído com sucesso.`);
-        } else {
-          alert("Erro ao excluir o cliente.");
-        }
-      } catch (error) {
-        console.error("Erro ao excluir o cliente", error);
-        alert("Ocorreu um erro ao excluir o cliente.");
-      }
+  // limpa os filtros
+  const handleClear = () => {
+    setSearchParams({
+      cpf: "",
+      name: "",
+      date_birth: "",
+      sex: "",
+      state: "",
+      city: "",
+    });
+    setCurrentPage(1);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSearchParams((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Confirma exclusão deste cliente?")) return;
+    try {
+      await ClientService.deleteClient(id);
+      fetchClients(currentPage, searchParams);
+    } catch (err) {
+      console.error("Erro ao excluir client:", err);
+      alert("Não foi possível excluir o cliente.");
     }
   };
 
   return {
+    // dados de listagem
     clients,
     loading,
     currentPage,
     totalPages,
-    handleSearch,
-    handleDelete,
     setCurrentPage,
-    fetchClients,
+    handleDelete,
+
+    // filtros e controle do FilterForm
+    searchParams,
+    cities,
+    handleChange,
+    handleSubmit,
+    handleClear,
   };
 }
 
-export default Client;
+export default useClient;
