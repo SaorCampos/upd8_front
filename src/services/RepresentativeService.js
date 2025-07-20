@@ -31,18 +31,18 @@ const RepresentativeService = {
     }
   },
   postRepresentative: async (body) => {
-    try {
-      const response = RepresentativeRepository.postRepresentative(body);
-      return response;
-    } catch (error) {
-      console.error("Erro ao fazer requisição", error.message);
-      return error;
-    }
+  try {
+    const response = await RepresentativeRepository.postRepresentative(body);
+    return response;
+  } catch (error) {
+    console.error("Erro ao fazer requisição", error.message);
+    return error;
   }
+}
   ,
   putRepresentative: async (body) => {
     try {
-      const response = RepresentativeRepository.putRepresentative(body);
+      const response = await RepresentativeRepository.putRepresentative(body);
       return response;
     } catch (error) {
       console.error("Erro ao fazer requisição", error.message);

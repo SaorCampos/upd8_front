@@ -35,7 +35,7 @@ const ClientService = {
 
   putClient: async (body) => {
     try {
-      const response = ClientRepository.putClient(body);
+      const response = await ClientRepository.putClient(body);
       return response;
     } catch (error) {
       console.error("Erro ao fazer requisição", error.message);

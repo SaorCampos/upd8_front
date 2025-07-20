@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import CityService from "../../services/CityService";
 import ClientService from "../../services/ClientService";
 import FormatCPF from "../../support/formatField/FormatCPF";
+import { useNavigate } from "react-router-dom";
 
 function ClientCreate() {
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [cities, setCities] = useState([]);
   const [formData, setFormData] = useState({
@@ -61,6 +63,7 @@ function ClientCreate() {
       const response = await ClientService.postClient(formData);
       if (response.status === 201) {
         alert("Cadastro realizado com sucesso!");
+        navigate("/cliente");
         handleClear();
         setErrors({});
       } else {

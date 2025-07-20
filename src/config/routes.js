@@ -3,6 +3,8 @@ import ClientPage from '../pages/client/ClientPage';
 import ClientCreatePage from '../pages/client/ClientCreatePage';
 import ClientUpdatePage from '../pages/client/ClientUpdatePage';
 import RepresentativePage from '../pages/representative/RepresentativePage';
+import RepresentativeCreatePage from '../pages/representative/RepresentativeCreatePage';
+import RepresentativeUpdatePage from '../pages/representative/RepresentativeUpdatePage';
 
 export const routes = [
   { 
@@ -31,12 +33,12 @@ export const routes = [
     resource: 'representante',
     type:     'create',
     path:     'representante/registrar',
-    component:<RepresentativePage />
+    component:<RepresentativeCreatePage />
   },
   {
     resource: 'representante',
     type:     'update',
     path:     'representante/alterar/:id',
-    component:<RepresentativePage />
+    component:<RepresentativeUpdatePage />
   }
 ];

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import CityService from "../../services/CityService";
 import ClientService from "../../services/ClientService";
+import { useNavigate } from "react-router-dom";
 
 const ClientUpdate = () => {
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [cities, setCities] = useState([]);
   const [formData, setFormData] = useState({
@@ -75,6 +77,7 @@ const ClientUpdate = () => {
       console.log(response);
       if (response.status === 200) {
         alert("Edição realizada com sucesso!");
+        navigate("/cliente");
         handleClear();
         setErrors({});
       } else {

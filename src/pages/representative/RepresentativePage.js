@@ -61,6 +61,7 @@ export default function RepresentativePage() {
                     data={tableData}
                     columnAliases={columnAliases}
                     onDelete={handleDelete}
+                    editPath="/representante/alterar"
                   />
                   <Pagination
                     currentPage={currentPage}
