@@ -18,6 +18,19 @@ Exploro o ecossistema da biblioteca do ReactJS, utilizando funcionalidades como 
     <li>[Integração com API do IBGE, para consultar as cidades por UF](https://servicodados.ibge.gov.br/api/docs/localidades)</li>
 </ul>
 
+### TELAS
+
+### Listagem
+![LISTAGEM](Lista-Clientes.png)
+![LISTAGEM](Lista-Representantes.png)
+
+### CADASTRO
+![CADASTRO](Cadastrar-Cliente.png)
+![CADASTRO](Cadastrar-Representante.png)
+
+### EDIÇÃO
+![EDIÇÃO](Editar-Cliente.png)
+![EDIÇÃO](Editar-Representante.png)
 
 ## PASSOS:
 
@@ -57,3 +70,16 @@ Exploro o ecossistema da biblioteca do ReactJS, utilizando funcionalidades como 
 `npm start`
 Agora acesse o endereço http://localhost:3000 em seu navegador
 </details>
+
+## Rotas
+
+### Cliente
+
+[Listagem_Cliente](http://localhost:3000/cliente), 
+[Cadastrar_Cliente](http://localhost:3000/cliente/registrar),
+[Editar_Cliente](http://localhost:3000/cliente/alterar/{id})
+
+### Representante
+[Listagem_Representante](http://localhost:3000/representante),
+[Cadastrar_Representante](http://localhost:3000/representante/registrar),
+[Editar_Representante](http://localhost:3000/representante/alterar/{id})
